@@ -15,11 +15,11 @@ resource "aws_lb_target_group" "blue" {
     target_type = "ip"
 
     health_check {
-        path                = "/admin"
-        matcher             = "200-399"
+        path                = "/_health"
+        matcher             = "200"
+        interval            = 30
         healthy_threshold   = 2
         unhealthy_threshold = 2
-        interval            = 30
     }
 }
 
@@ -32,11 +32,11 @@ resource "aws_lb_target_group" "green" {
     target_type = "ip"
 
     health_check {
-        path                = "/admin"
-        matcher             = "200-399"
+        path                = "/_health"
+        matcher             = "200"
+        interval            = 30
         healthy_threshold   = 2
         unhealthy_threshold = 2
-        interval            = 30
     }
 }
 
