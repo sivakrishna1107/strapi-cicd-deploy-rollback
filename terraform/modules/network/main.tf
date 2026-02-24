@@ -15,9 +15,9 @@ data "aws_subnet" "details" {
 }
 
 locals {
-    public_subnets_by_az = {
+    public_subnets = [
         for s in data.aws_subnet.details :
-        s.availability_zone => s.id
+        s.id
         if s.map_public_ip_on_launch
-    }
+    ]
 }

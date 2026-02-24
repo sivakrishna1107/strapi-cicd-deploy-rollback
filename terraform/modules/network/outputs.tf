@@ -3,5 +3,5 @@ output "vpc_id" {
 }
 
 output "subnet_ids" {
-    value = values(local.public_subnets_by_az)
+    value = slice(local.public_subnets, 0, 2)
 }
