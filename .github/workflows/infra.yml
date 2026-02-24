@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'modules/**'
-      - '*.tf'
 
 jobs:
   terraform:
