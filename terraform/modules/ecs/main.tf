@@ -81,6 +81,7 @@ resource "aws_ecs_service" "this" {
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 2
   launch_type     = "FARGATE"
+  health_check_grace_period_seconds = 120
 
   deployment_controller {
     type = "CODE_DEPLOY"
