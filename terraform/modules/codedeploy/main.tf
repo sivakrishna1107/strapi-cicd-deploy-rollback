@@ -14,7 +14,11 @@ resource "aws_codedeploy_deployment_group" "ecs_dg" {
         deployment_type   = "BLUE_GREEN"
         deployment_option = "WITH_TRAFFIC_CONTROL"
     }
-    
+
+    lifecycle {
+        ignore_changes = all
+    }
+
     auto_rollback_configuration {
         enabled = true
         events  = ["DEPLOYMENT_FAILURE"]
