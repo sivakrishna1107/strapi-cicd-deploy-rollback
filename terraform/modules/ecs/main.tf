@@ -2,6 +2,10 @@ resource "aws_ecs_cluster" "strapi_cluster" {
     name = "strapi-cluster-jayani"
 }
 
+resource "aws_cloudwatch_log_group" "strapi" {
+  name              = "/ecs/strapi"
+}
+
 resource "aws_ecs_task_definition" "strapi" {
     family                   = "strapi-task-jayani"
     requires_compatibilities = ["FARGATE"]
@@ -11,18 +15,47 @@ resource "aws_ecs_task_definition" "strapi" {
     execution_role_arn       = var.execution_role_arn
 
     container_definitions = jsonencode([
-        {
+    {
         name  = "strapi"
-        image = "nginx:latest"
+        image = var.image_uri
+
         portMappings = [{
-            containerPort = 1337
-            hostPort      = 1337
+        containerPort = 1337
+        hostPort      = 1337
         }]
+
+        environment = [
+            { name = "HOST", value = "0.0.0.0" },
+            { name = "PORT", value = "1337" }
+            { name = "DATABASE_CLIENT", value = "postgres" },
+            { name = "DATABASE_HOST", value = var.db_host },
+            { name = "DATABASE_PORT", value = "5432" },
+            { name = "DATABASE_NAME", value = "strapi" },
+            { name = "DATABASE_USERNAME", value = "strapiadmin" },
+            { name = "DATABASE_PASSWORD", value = var.db_password },
+
+            { name = "APP_KEYS", value = var.app_keys },
+            { name = "API_TOKEN_SALT", value = var.api_token_salt },
+            { name = "ADMIN_JWT_SECRET", value = var.admin_jwt_secret },
+            { name = "JWT_SECRET", value = var.jwt_secret },
+        ]
+
+        logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+            awslogs-group         = "/ecs/strapi"
+            awslogs-region        = var.aws_region
+            awslogs-stream-prefix = "ecs"
         }
+        }
+    }
     ])
 }
 
 resource "aws_ecs_service" "strapi_service" {
+    depends_on = [
+        aws_cloudwatch_log_group.strapi
+    ]
     name            = "strapi-service-jayani"
     cluster         = aws_ecs_cluster.strapi_cluster.id
     task_definition = aws_ecs_task_definition.strapi.arn

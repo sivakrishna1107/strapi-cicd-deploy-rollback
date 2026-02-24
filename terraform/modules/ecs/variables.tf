@@ -17,3 +17,27 @@ variable "image_uri" {
 variable "blue_target_group_arn" {
     type = string
 }
+
+variable "db_host" {
+
+}
+
+variable "db_password" {
+
+}
+
+variable "app_keys" {
+
+}
+
+variable "api_token_salt" {
+
+}
+
+variable "admin_jwt_secret" {
+
+}
+
+variable "jwt_secret" {
+    
+}
