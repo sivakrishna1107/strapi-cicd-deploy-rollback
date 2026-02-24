@@ -56,6 +56,12 @@ resource "aws_ecs_service" "strapi_service" {
     desired_count   = 2
     launch_type     = "FARGATE"
 
+    lifecycle {
+        ignore_changes = [
+            task_definition
+        ]
+    }
+
     deployment_controller {
         type = "CODE_DEPLOY"
     }
