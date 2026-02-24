@@ -2,10 +2,6 @@ resource "aws_ecs_cluster" "strapi_cluster" {
     name = "strapi-cluster-jayani"
 }
 
-resource "aws_cloudwatch_log_group" "strapi" {
-  name              = "/ecs/strapi-jayani"
-}
-
 resource "aws_ecs_task_definition" "strapi" {
     family                   = "strapi-task-jayani"
     requires_compatibilities = ["FARGATE"]
@@ -41,21 +37,19 @@ resource "aws_ecs_task_definition" "strapi" {
         ]
 
         logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-            awslogs-group         = "/ecs/strapi"
-            awslogs-region        = var.aws_region
-            awslogs-stream-prefix = "ecs"
-        }
+            logDriver = "awslogs"
+            options = {
+                awslogs-group         = "/ecs/strapi-jayani"
+                awslogs-region        = var.aws_region
+                awslogs-stream-prefix = "ecs"
+                awslogs-create-group = "true"
+            }
         }
     }
     ])
 }
 
 resource "aws_ecs_service" "strapi_service" {
-    depends_on = [
-        aws_cloudwatch_log_group.strapi
-    ]
     name            = "strapi-service-jayani"
     cluster         = aws_ecs_cluster.strapi_cluster.id
     task_definition = aws_ecs_task_definition.strapi.arn
