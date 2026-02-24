@@ -8,6 +8,11 @@ resource "aws_codedeploy_deployment_group" "this" {
   deployment_group_name = "${var.project_name}-dg-jayani"
   service_role_arn      = var.codedeploy_role_arn
 
+  deployment_style {
+    deployment_type   = "BLUE_GREEN"
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+  }
+  
   deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
 
   auto_rollback_configuration {
