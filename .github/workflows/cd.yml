@@ -99,10 +99,21 @@ jobs:
       # -----------------------------
       # Trigger CodeDeploy
       # -----------------------------
-      - name: Create CodeDeploy Deployment
+      - name: Create Deployment JSON
+        run: |
+            cat <<EOF > revision.json
+            {
+                "revisionType": "AppSpecContent",
+                "appSpecContent": {
+                "content": "$(cat appspec.json | jq -c .)"
+                }
+            }
+            EOF
+
+      - name: Trigger CodeDeploy Deployment
         run: |
           aws deploy create-deployment \
             --application-name $CODEDEPLOY_APP \
             --deployment-group-name $DEPLOYMENT_GROUP \
             --deployment-config-name CodeDeployDefault.ECSCanary10Percent5Minutes \
-            --revision revisionType=AppSpecContent,appSpecContent="{\"content\":\"$(cat appspec.json | tr -d '\n')\"}"
+            --revision file://revision.json
