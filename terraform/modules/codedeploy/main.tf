@@ -25,7 +25,7 @@ resource "aws_codedeploy_deployment_group" "this" {
         action_on_timeout    = "CONTINUE_DEPLOYMENT"
         wait_time_in_minutes = 0
     }
-    
+
     terminate_blue_instances_on_deployment_success {
       action                          = "TERMINATE"
       termination_wait_time_in_minutes = 5
@@ -53,4 +53,12 @@ resource "aws_codedeploy_deployment_group" "this" {
       }
     }
   }
+}
+
+output "app_name" {
+  value = aws_codedeploy_app.this.name
+}
+
+output "deployment_group_name" {
+  value = aws_codedeploy_deployment_group.this.deployment_group_name
 }

@@ -12,7 +12,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy project files
-COPY . .
+COPY . .         
 
 # Build Strapi admin panel
 RUN npm run build
