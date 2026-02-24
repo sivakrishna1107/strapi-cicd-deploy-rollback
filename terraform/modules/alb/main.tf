@@ -15,13 +15,11 @@ resource "aws_lb_target_group" "blue" {
     target_type = "ip"
 
     health_check {
-        path                = "/"
-        protocol            = "HTTP"
-        matcher             = "200-499"
-        interval            = 30
-        timeout             = 10
+        path                = "/admin"
+        matcher             = "200-399"
         healthy_threshold   = 2
-        unhealthy_threshold = 10
+        unhealthy_threshold = 2
+        interval            = 30
     }
 }
 
@@ -34,13 +32,11 @@ resource "aws_lb_target_group" "green" {
     target_type = "ip"
 
     health_check {
-        path                = "/"
-        protocol            = "HTTP"
-        matcher             = "200-499"
-        interval            = 30
-        timeout             = 10
+        path                = "/admin"
+        matcher             = "200-399"
         healthy_threshold   = 2
-        unhealthy_threshold = 10
+        unhealthy_threshold = 2
+        interval            = 30
     }
 }
 
