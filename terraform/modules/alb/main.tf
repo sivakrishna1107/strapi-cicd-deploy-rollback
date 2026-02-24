@@ -15,8 +15,8 @@ resource "aws_lb_target_group" "blue" {
     target_type = "ip"
 
     health_check {
-        path                = "/_health"
-        matcher             = "200"
+        path                = "/"
+        matcher             = "200-499"
         interval            = 30
         healthy_threshold   = 2
         unhealthy_threshold = 2
@@ -32,8 +32,8 @@ resource "aws_lb_target_group" "green" {
     target_type = "ip"
 
     health_check {
-        path                = "/_health"
-        matcher             = "200"
+        path                = "/"
+        matcher             = "200-499"
         interval            = 30
         healthy_threshold   = 2
         unhealthy_threshold = 2
