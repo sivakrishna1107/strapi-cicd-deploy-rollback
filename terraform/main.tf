@@ -11,6 +11,12 @@ module "alb" {
   alb_sg_id    = module.network.alb_sg_id
 }
 
+
+module "ecr" {
+  source       = "./modules/ecr"
+  project_name = var.project_name
+}
+
 module "ecs" {
   source               = "./modules/ecs"
   project_name         = var.project_name
@@ -18,7 +24,7 @@ module "ecs" {
   ecs_sg_id            = module.network.ecs_sg_id
   blue_target_group_arn = module.alb.blue_tg_arn
   execution_role_arn   = var.execution_role_arn
-  image_uri            = var.image_uri
+  image_uri            = "${module.ecr.repository_url}:latest"
 }
 
 module "codedeploy" {
