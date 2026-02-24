@@ -3,8 +3,5 @@ output "vpc_id" {
 }
 
 output "subnet_ids" {
-    value = distinct([
-        for s in data.aws_subnet.selected :
-        s.id if s.map_public_ip_on_launch
-    ])
+    value = values(local.public_subnets_by_az)
 }
