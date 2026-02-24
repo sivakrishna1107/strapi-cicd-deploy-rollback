@@ -99,16 +99,16 @@ jobs:
       # -----------------------------
       # Trigger CodeDeploy
       # -----------------------------
-      - name: Create Deployment JSON
+      - name: Create revision.json safely
         run: |
-            cat <<EOF > revision.json
-            {
-                "revisionType": "AppSpecContent",
-                "appSpecContent": {
-                "content": "$(cat appspec.json | jq -c .)"
-                }
-            }
-            EOF
+          jq -n \
+            --arg content "$(cat appspec.json)" \
+            '{
+              revisionType: "AppSpecContent",
+              appSpecContent: {
+                content: $content
+              }
+            }' > revision.json
 
       - name: Trigger CodeDeploy Deployment
         run: |
