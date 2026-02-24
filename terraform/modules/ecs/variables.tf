@@ -1,3 +1,7 @@
+variable "aws_region" {
+    type = string
+}
+
 variable "subnet_ids" {
     type = list(string)
 }
@@ -39,5 +43,5 @@ variable "admin_jwt_secret" {
 }
 
 variable "jwt_secret" {
-    
+
 }

@@ -1,5 +1,5 @@
 variable "aws_region" {
-    default = "us-east-1"
+    type = string
 }
 
 variable "execution_role_arn" {
@@ -11,5 +11,5 @@ variable "image_uri" {
 }
 
 variable "codedeploy_role_arn" {
-    
+
 }

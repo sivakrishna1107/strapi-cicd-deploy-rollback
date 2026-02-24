@@ -16,10 +16,12 @@ module "alb" {
 
 module "ecs" {
     source = "./modules/ecs"
-
+    
+    aws_region         = var.aws_region
     subnet_ids            = module.network.subnet_ids
     ecs_sg_id             = module.security.ecs_sg_id
     execution_role_arn    = var.execution_role_arn
+
     image_uri             = var.image_uri
     blue_target_group_arn = module.alb.blue_tg_arn
     depends_on            = [module.alb]
