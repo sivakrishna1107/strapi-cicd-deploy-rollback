@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "strapi_cluster" {
 }
 
 resource "aws_cloudwatch_log_group" "strapi" {
-  name              = "/ecs/strapi"
+  name              = "/ecs/strapi-jayani"
 }
 
 resource "aws_ecs_task_definition" "strapi" {
