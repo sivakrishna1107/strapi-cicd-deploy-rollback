@@ -16,7 +16,9 @@ resource "aws_codedeploy_deployment_group" "ecs_dg" {
     }
 
     lifecycle {
-        ignore_changes = all
+        ignore_changes = [
+            task_definition
+        ]
     }
 
     auto_rollback_configuration {
