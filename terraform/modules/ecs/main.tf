@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "strapi_cluster" {
 }
 
 resource "aws_ecs_task_definition" "strapi" {
-    family                   = "strapi-task"
+    family                   = "strapi-task-jayani"
     requires_compatibilities = ["FARGATE"]
     network_mode             = "awsvpc"
     cpu                      = "512"
@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "strapi" {
 }
 
 resource "aws_ecs_service" "strapi_service" {
-    name            = "strapi-service"
+    name            = "strapi-service-jayani"
     cluster         = aws_ecs_cluster.strapi_cluster.id
     task_definition = aws_ecs_task_definition.strapi.arn
     desired_count   = 2
