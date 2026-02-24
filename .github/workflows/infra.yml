@@ -1,40 +1,36 @@
-name: Infra - Terraform Apply
+name: Terraform Infrastructure
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - "terraform/**"
-    branches: [main]
-
-concurrency:
-  group: terraform
-  cancel-in-progress: false
+      - 'modules/**'
+      - '*.tf'
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: us-east-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: terraform
-        run: terraform init -reconfigure
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
 
       - name: Terraform Apply
-        working-directory: terraform
         run: terraform apply -auto-approve

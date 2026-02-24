@@ -1,7 +1,7 @@
 output "cluster_name" {
-    value = aws_ecs_cluster.strapi_cluster.name
+  value = aws_ecs_cluster.this.name
 }
 
 output "service_name" {
-    value = aws_ecs_service.strapi_service.name
+  value = aws_ecs_service.this.name
 }

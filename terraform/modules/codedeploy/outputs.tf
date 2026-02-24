@@ -1,7 +1,11 @@
-output "app_name" {
-    value = aws_codedeploy_app.ecs_app.name
+output "blue_tg_name" {
+  value = aws_lb_target_group.blue.name
 }
 
-output "deployment_group_name" {
-    value = aws_codedeploy_deployment_group.ecs_dg.deployment_group_name
+output "green_tg_name" {
+  value = aws_lb_target_group.green.name
+}
+
+output "listener_arn" {
+  value = aws_lb_listener.http.arn
 }
