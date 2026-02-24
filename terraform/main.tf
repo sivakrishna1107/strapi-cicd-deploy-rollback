@@ -48,6 +48,6 @@ module "rds" {
     vpc_id     = module.network.vpc_id
     subnet_ids = module.network.subnet_ids
     ecs_sg_id  = module.security.ecs_sg_id
-
     db_password = random_password.db_password.result
+    rds_sg_id   = module.security.rds_sg_id
 }
