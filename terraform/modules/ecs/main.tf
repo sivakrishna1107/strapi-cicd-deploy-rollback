@@ -48,7 +48,7 @@ resource "aws_ecs_task_definition" "this" {
         },
         {
             name  = "DATABASE_HOST"
-            value = module.rds.db_endpoint
+            value = var.db_host
         },
         {
             name  = "DATABASE_PORT"
@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "this" {
         },
         {
             name  = "DATABASE_NAME"
-            value = module.rds.db_name
+            value = var.db_name
         },
         {
             name  = "DATABASE_USERNAME"
