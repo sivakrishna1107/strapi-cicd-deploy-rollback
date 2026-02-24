@@ -5,8 +5,13 @@ data "aws_vpc" "default" {
 
 # Get default subnets
 data "aws_subnets" "default" {
-    filter {
-        name = "vpc-id"
-        values = [data.aws_vpc.default.id]
-    }
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+data "aws_subnet" "selected" {
+  for_each = toset(data.aws_subnets.default.ids)
+  id       = each.value
 }

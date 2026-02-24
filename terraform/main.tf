@@ -22,6 +22,7 @@ module "ecs" {
     execution_role_arn    = var.execution_role_arn
     image_uri             = var.image_uri
     blue_target_group_arn = module.alb.blue_tg_arn
+    depends_on            = [module.alb]
 }
 
 module "codedeploy" {
