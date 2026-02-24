@@ -21,8 +21,56 @@ resource "aws_ecs_task_definition" "this" {
           hostPort      = 1337
         }
       ]
-
-      essential = true
+      environment = [
+        {
+            name  = "NODE_ENV"
+            value = "production"
+        },
+        {
+            name  = "APP_KEYS"
+            value = "key1,key2,key3,key4"
+        },
+        {
+            name  = "API_TOKEN_SALT"
+            value = "someRandomSalt123"
+        },
+        {
+            name  = "ADMIN_JWT_SECRET"
+            value = "adminSecret123"
+        },
+        {
+            name  = "JWT_SECRET"
+            value = "jwtSecret123"
+        },
+        {
+            name  = "DATABASE_CLIENT"
+            value = "postgres"
+        },
+        {
+            name  = "DATABASE_HOST"
+            value = module.rds.db_endpoint
+        },
+        {
+            name  = "DATABASE_PORT"
+            value = "5432"
+        },
+        {
+            name  = "DATABASE_NAME"
+            value = module.rds.db_name
+        },
+        {
+            name  = "DATABASE_USERNAME"
+            value = var.db_username
+        },
+        {
+            name  = "DATABASE_PASSWORD"
+            value = var.db_password
+        },
+        {
+            name  = "DATABASE_SSL"
+            value = "false"
+        }
+      ]
     }
   ])
 }

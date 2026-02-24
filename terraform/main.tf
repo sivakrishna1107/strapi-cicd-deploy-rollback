@@ -25,6 +25,10 @@ module "ecs" {
   blue_target_group_arn = module.alb.blue_tg_arn
   execution_role_arn   = var.execution_role_arn
   image_uri            = "${module.ecr.repository_url}:latest"
+  db_host     = module.rds.db_endpoint
+  db_name     = module.rds.db_name
+  db_username = var.db_username
+  db_password = var.db_password
 }
 
 module "codedeploy" {
@@ -37,4 +41,13 @@ module "codedeploy" {
   green_tg_name      = module.alb.green_tg_name
   listener_arn       = module.alb.listener_arn
   codedeploy_role_arn = var.codedeploy_role_arn
+}
+
+module "rds" {
+  source        = "./modules/rds"
+  project_name  = var.project_name
+  subnet_ids    = module.network.subnet_ids
+  ecs_sg_id     = module.network.ecs_sg_id
+  db_username   = var.db_username
+  db_password   = var.db_password
 }

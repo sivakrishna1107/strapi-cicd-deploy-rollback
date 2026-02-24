@@ -1,16 +1,12 @@
-variable "aws_region" {
-  type = string
-}
-
 variable "project_name" {
   type = string
 }
 
-variable "execution_role_arn" {
-  type = string
+variable "subnet_ids" {
+  type = list(string)
 }
 
-variable "codedeploy_role_arn" {
+variable "ecs_sg_id" {
   type = string
 }
 
