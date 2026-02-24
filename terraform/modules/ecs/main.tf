@@ -56,12 +56,7 @@ resource "aws_ecs_service" "strapi_service" {
     desired_count   = 2
     launch_type     = "FARGATE"
 
-    lifecycle {
-        ignore_changes = [
-            task_definition
-        ]
-    }
-
+    
     deployment_controller {
         type = "CODE_DEPLOY"
     }
@@ -76,5 +71,14 @@ resource "aws_ecs_service" "strapi_service" {
         target_group_arn = var.blue_target_group_arn
         container_name   = "strapi"
         container_port   = 1337
+    }
+
+    lifecycle {
+        ignore_changes = [
+            task_definition,
+            network_configuration,
+            load_balancer,
+            desired_count
+        ]
     }
 }
