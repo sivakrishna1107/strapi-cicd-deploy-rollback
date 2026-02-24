@@ -16,10 +16,12 @@ resource "aws_lb_target_group" "blue" {
 
     health_check {
         path                = "/"
-        matcher             = "200-399"
-        healthy_threshold   = 2
-        unhealthy_threshold = 2
+        protocol            = "HTTP"
+        matcher             = "200-499"
         interval            = 30
+        timeout             = 10
+        healthy_threshold   = 2
+        unhealthy_threshold = 10
     }
 }
 
@@ -33,10 +35,12 @@ resource "aws_lb_target_group" "green" {
 
     health_check {
         path                = "/"
-        matcher             = "200-399"
-        healthy_threshold   = 2
-        unhealthy_threshold = 2
+        protocol            = "HTTP"
+        matcher             = "200-499"
         interval            = 30
+        timeout             = 10
+        healthy_threshold   = 2
+        unhealthy_threshold = 10
     }
 }
 
