@@ -1,6 +1,6 @@
 terraform {
     backend "s3" {
-        bucket         = "strapi-tfstate-jayani"
+        bucket         = "strapi-tfstate-jay"
         key            = "bluegreen/terraform.tfstate"
         region         = "us-east-1"
         encrypt        = true
