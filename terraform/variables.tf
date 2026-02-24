@@ -6,11 +6,11 @@ variable "project_name" {
   type = string
 }
 
-variable "execution_role_arn" {
+variable "image_uri" {
   type = string
 }
 
-variable "image_uri" {
+variable "execution_role_arn" {
   type = string
 }
 

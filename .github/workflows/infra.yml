@@ -33,4 +33,10 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: |
+          terraform apply -auto-approve \
+            -var="aws_region=us-east-1" \
+            -var="project_name=strapi" \
+            -var="image_uri=public.ecr.aws/docker/library/nginx:latest" \
+            -var="execution_role_arn=${{ secrets.ECS_EXECUTION_ROLE_ARN }}" \
+            -var="codedeploy_role_arn=${{ secrets.CODEDEPLOY_ROLE_ARN }}"
