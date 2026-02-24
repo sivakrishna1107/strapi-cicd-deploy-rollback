@@ -1,9 +1,9 @@
 resource "aws_ecs_cluster" "this" {
-  name = "${var.project_name}-cluster"
+  name = "${var.project_name}-cluster-jayani"
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = "${var.project_name}-task"
+  family                   = "${var.project_name}-task-jayani"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "512"
@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "this" {
 }
 
 resource "aws_ecs_service" "this" {
-  name            = "${var.project_name}-service"
+  name            = "${var.project_name}-service-jayani"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 2

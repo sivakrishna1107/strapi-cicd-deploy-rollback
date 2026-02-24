@@ -1,6 +1,6 @@
 # Application Load Balancer
 resource "aws_lb" "this" {
-  name               = "${var.project_name}-alb"
+  name               = "${var.project_name}-alb-jayani"
   load_balancer_type = "application"
   subnets            = var.subnet_ids
   security_groups    = [var.alb_sg_id]
@@ -8,7 +8,7 @@ resource "aws_lb" "this" {
 
 # Blue Target Group
 resource "aws_lb_target_group" "blue" {
-  name        = "${var.project_name}-blue"
+  name        = "${var.project_name}-blue-jayani"
   port        = 1337
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "blue" {
 
 # Green Target Group
 resource "aws_lb_target_group" "green" {
-  name        = "${var.project_name}-green"
+  name        = "${var.project_name}-green-jayani"
   port        = 1337
   protocol    = "HTTP"
   vpc_id      = var.vpc_id

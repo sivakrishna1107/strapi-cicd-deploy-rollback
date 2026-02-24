@@ -13,7 +13,7 @@ data "aws_subnets" "default" {
 
 # ALB Security Group
 resource "aws_security_group" "alb_sg" {
-  name   = "${var.project_name}-alb-sg"
+  name   = "${var.project_name}-alb-sg-jayani"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -40,7 +40,7 @@ resource "aws_security_group" "alb_sg" {
 
 # ECS Security Group
 resource "aws_security_group" "ecs_sg" {
-  name   = "${var.project_name}-ecs-sg"
+  name   = "${var.project_name}-ecs-sg-jayani"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
