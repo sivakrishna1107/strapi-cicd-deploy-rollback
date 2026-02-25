@@ -23,6 +23,14 @@ resource "aws_ecs_task_definition" "this" {
       ]
       environment = [
         {
+            name = "HOST"
+            value = "0.0.0.0"
+        },
+        {
+            name = "PORT",
+            value = "1337"
+        },
+        {
             name  = "NODE_ENV"
             value = "production"
         },
@@ -69,8 +77,20 @@ resource "aws_ecs_task_definition" "this" {
         {
             name  = "DATABASE_SSL"
             value = "false"
+        },
+        {
+            name  = "DATABASE_SSL_REJECT_UNAUTHORIZED",
+            value = "false"
         }
       ]
+      logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+            awslogs-group         = "/ecs/${var.project_name}"
+            awslogs-region        = "us-east-1"
+            awslogs-stream-prefix = "ecs"
+          }
+      }
     }
   ])
 }
