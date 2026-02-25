@@ -2,10 +2,6 @@ resource "aws_ecs_cluster" "this" {
   name = "${var.project_name}-cluster-jayani"
 }
 
-resource "aws_cloudwatch_log_group" "ecs" {
-  name              = "/ecs/${var.project_name}"
-}
-
 resource "aws_ecs_task_definition" "this" {
   family                   = "${var.project_name}-task-jayani"
   requires_compatibilities = ["FARGATE"]
@@ -90,7 +86,7 @@ resource "aws_ecs_task_definition" "this" {
       logConfiguration = {
           logDriver = "awslogs"
           options = {
-            awslogs-group         = aws_cloudwatch_log_group.ecs.name
+            awslogs-group         = "/ecs/${var.project_name}-jay"
             awslogs-region        = var.aws_region
             awslogs-stream-prefix = "ecs"
           }
