@@ -44,37 +44,27 @@ jobs:
           echo "CODEDEPLOY_APP=$(terraform output -raw codedeploy_app_name)" >> $GITHUB_ENV
           echo "DEPLOYMENT_GROUP=$(terraform output -raw deployment_group_name)" >> $GITHUB_ENV
           echo "ECR_REPOSITORY=$(terraform output -raw ecr_repository_url)" >> $GITHUB_ENV
+      
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+        
+      - name: Get Current Task Definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition $TASK_FAMILY \
+            --query "taskDefinition" \
+            > taskdef.json
 
-      # -----------------------------
-      # Register New Task Definition
-      # -----------------------------
-      - name: Register New Task Definition
+      - name: Update Image in Task Definition
+        run: |
+          jq '.containerDefinitions[0].image = "'"$ECR_REPOSITORY:latest"'"' taskdef.json \
+          | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
+          > new-taskdef.json
+
+      - name: Register Updated Task Definition
         run: |
           NEW_TASK_DEF=$(aws ecs register-task-definition \
-            --family $TASK_FAMILY \
-            --network-mode awsvpc \
-            --requires-compatibilities FARGATE \
-            --cpu "512" \
-            --memory "1024" \
-            --execution-role-arn ${{ secrets.ECS_EXECUTION_ROLE_ARN }} \
-            --container-definitions "[{
-              \"name\": \"strapi\",
-              \"image\": \"$ECR_REPOSITORY:latest\",
-              \"essential\": true,
-              \"portMappings\": [{
-                \"containerPort\": 1337,
-                \"hostPort\": 1337
-              }],
-              \"environment\": [
-                {\"name\": \"DATABASE_HOST\", \"value\": \"${{ secrets.DATABASE_HOST }}\"},
-                {\"name\": \"DATABASE_PORT\", \"value\": \"5432\"},
-                {\"name\": \"DATABASE_NAME\", \"value\": \"strapi\"},
-                {\"name\": \"DATABASE_USERNAME\", \"value\": \"${{ secrets.DATABASE_USERNAME }}\"},
-                {\"name\": \"DATABASE_PASSWORD\", \"value\": \"${{ secrets.DATABASE_PASSWORD }}\"},
-                {\"name\": \"DATABASE_SSL\", \"value\": \"true\"},
-                {\"name\": \"DATABASE_SSL_REJECT_UNAUTHORIZED\", \"value\": \"false\"}
-              ]
-            }]" \
+            --cli-input-json file://new-taskdef.json \
             --query "taskDefinition.taskDefinitionArn" \
             --output text)
 
