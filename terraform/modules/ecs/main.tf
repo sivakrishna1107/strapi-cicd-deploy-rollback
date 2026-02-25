@@ -89,7 +89,6 @@ resource "aws_ecs_task_definition" "this" {
             awslogs-group         = "/ecs/${var.project_name}-jayani"
             awslogs-region        = var.aws_region
             awslogs-stream-prefix = "ecs"
-            awslogs-create-group  = "true"
           }
       }
     }
