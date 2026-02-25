@@ -1,118 +1,99 @@
-# 🚀 Strapi Deployment on AWS ECS Fargate Spot using Terraform & GitHub Actions
+# 🚀 Strapi Blue/Green Deployment on AWS ECS (Fargate)
 
-## 📌 Project Overview
+This project demonstrates a complete Blue/Green deployment architecture for a Strapi application using:
 
-This project deploys a **Strapi CMS application** on AWS using:
-
-- Amazon ECS (Fargate Spot)
-- Amazon RDS (PostgreSQL)
+- Amazon ECS (Fargate)
+- AWS CodeDeploy (Blue/Green strategy)
 - Application Load Balancer (ALB)
+- Amazon RDS (PostgreSQL)
 - Amazon ECR
-- Terraform (Modular Infrastructure as Code)
+- Terraform (Modular Infrastructure)
 - GitHub Actions (CI/CD)
 
-The entire infrastructure and deployment process is fully automated - no manual Docker builds or Terraform apply steps.
+---
+
+## 🏗 Architecture Overview
+
+- Strapi runs in ECS Fargate
+- Application Load Balancer routes traffic
+- Two target groups (Blue & Green)
+- CodeDeploy manages traffic shifting
+- RDS PostgreSQL as database
+- ECR stores Docker images
+- Terraform provisions infrastructure
+- GitHub Actions handles CI/CD
 
 ---
 
-## 🏗️ Architecture
+## 🔄 Deployment Strategy
 
-GitHub → GitHub Actions (CI)
-        → Build Docker Image
-        → Push to ECR
-        → Trigger CD
-        → Terraform Apply
-        → ECS Fargate Spot
-        → ALB
-        → Users
+Blue/Green deployment using: 
+CodeDeployDefault.ECSCanary10Percent5Minutes
 
-ECS tasks connect securely to RDS PostgreSQL.
+Flow:
+1. New task set (Green) is created
+2. 10% traffic shifted
+3. Wait 5 minutes
+4. 100% traffic shifted
+5. Old task set terminated
 
----
-
-## ☁️ AWS Services Used
-
-- ECS Fargate Spot (Cost-optimized container compute)
-- RDS PostgreSQL (Managed database)
-- Application Load Balancer
-- Elastic Container Registry (ECR)
-- IAM
-- Default VPC
-- CloudWatch Logs (for container debugging)
+Zero downtime deployment ✅
 
 ---
 
-## 🧱 Terraform Structure (Modular)
+## ⚙️ Infrastructure (Terraform Modules)
 
-```
-terraform/
-├── main.tf
-├── variables.tf
-├── outputs.tf
-├── providers.tf
-├── secrets.tf
-└── modules/
-    ├── security/
-    ├── rds/
-    ├── alb/
-    └── ecs/
-```
-
-Each module has a single responsibility:
-
-- security → Security groups
-- rds → PostgreSQL database
-- alb → Load balancer + target group
-- ecs → Cluster, task definition, service
+- VPC (Default VPC used)
+- ECS Cluster & Service
+- ALB & Target Groups
+- CodeDeploy Application & Deployment Group
+- RDS PostgreSQL
+- CloudWatch Log Group
+- Security Groups
 
 ---
 
-## 🔐 Secret Management
-
-Strapi application secrets are generated dynamically using Terraform `random_password` resources.
-
-This avoids hardcoding secrets in code or GitHub.
-
-Secrets generated:
-- APP_KEYS
-- API_TOKEN_SALT
-- ADMIN_JWT_SECRET
-- JWT_SECRET
+SSL is required for secure RDS connectivity.
 
 ---
 
-## 🐳 CI/CD Workflow
+## 🚀 CI/CD Flow
 
-### CI Pipeline
-- Triggered on push to `main`
+### 1️⃣ Infrastructure Workflow (`infra.yml`)
+- Runs Terraform init/plan/apply
+- Provisions full AWS infrastructure
+
+### 2️⃣ CI Workflow (`ci.yml`)
 - Builds Docker image
-- Pushes image to ECR
+- Pushes image to Amazon ECR
 
-### CD Pipeline
-- Triggered after successful CI
-- Runs `terraform apply`
-- Deploys or updates ECS service
-- Uses commit SHA as image tag
-
-Fully automated deployment.
+### 3️⃣ CD Workflow (`cd.yml`)
+- Fetches existing task definition
+- Updates container image
+- Registers new revision
+- Triggers CodeDeploy deployment
 
 ---
 
-## 💰 Why Fargate Spot?
+## 🧪 How to Deploy
 
-Fargate Spot was used to:
-- Reduce compute cost (up to 70%)
-- Run stateless container workloads
-- Automatically handle task interruptions
+### Step 1 – Deploy Infrastructure
+Push changes to `terraform/` folder.
 
-Since Strapi stores state in RDS, it is safe to run on Spot capacity.
+### Step 2 – Build & Push Image
+Push changes to `strapi-app/`.
+
+### Step 3 – Automatic Blue/Green Deployment
+CodeDeploy handles traffic shifting.
 
 ---
 
-## 🌐 Accessing the Application
+## ✅ Verification Checklist
 
-Open:
+- CodeDeploy deployment status = Succeeded
+- ECS tasks = Running & Healthy
+- Target groups = Healthy
+- ALB DNS loads Strapi
+- No downtime during deployment
 
-```
-http://<alb_dns_name>
-```
+
