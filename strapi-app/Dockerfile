@@ -22,3 +22,6 @@ EXPOSE 1337
 
 # Start Strapi
 CMD ["npm", "run", "start"]
+
+  
+  

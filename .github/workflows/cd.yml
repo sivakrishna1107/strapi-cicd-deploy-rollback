@@ -64,7 +64,16 @@ jobs:
               \"portMappings\": [{
                 \"containerPort\": 1337,
                 \"hostPort\": 1337
-              }]
+              }],
+              \"environment\": [
+                {\"name\": \"DATABASE_HOST\", \"value\": \"${{ secrets.DATABASE_HOST }}\"},
+                {\"name\": \"DATABASE_PORT\", \"value\": \"5432\"},
+                {\"name\": \"DATABASE_NAME\", \"value\": \"strapi\"},
+                {\"name\": \"DATABASE_USERNAME\", \"value\": \"${{ secrets.DATABASE_USERNAME }}\"},
+                {\"name\": \"DATABASE_PASSWORD\", \"value\": \"${{ secrets.DATABASE_PASSWORD }}\"},
+                {\"name\": \"DATABASE_SSL\", \"value\": \"true\"},
+                {\"name\": \"DATABASE_SSL_REJECT_UNAUTHORIZED\", \"value\": \"false\"}
+              ]
             }]" \
             --query "taskDefinition.taskDefinitionArn" \
             --output text)
