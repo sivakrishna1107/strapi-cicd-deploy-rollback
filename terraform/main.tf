@@ -19,6 +19,7 @@ module "ecr" {
 
 module "ecs" {
   source               = "./modules/ecs"
+  aws_region           = var.aws_region
   project_name         = var.project_name
   subnet_ids           = module.network.subnet_ids
   ecs_sg_id            = module.network.ecs_sg_id
