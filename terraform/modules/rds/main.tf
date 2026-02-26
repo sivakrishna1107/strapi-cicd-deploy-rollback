@@ -3,7 +3,7 @@ data "aws_vpc" "default" {
 }
 
 resource "aws_security_group" "rds_sg" {
-  name   = "${var.project_name}-rds-sg-jayani"
+  name   = "${var.project_name}-rds-sg-siva-t11"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -22,12 +22,12 @@ resource "aws_security_group" "rds_sg" {
 }
 
 resource "aws_db_subnet_group" "this" {
-  name       = "${var.project_name}-db-subnet-group-jayani"
+  name       = "${var.project_name}-db-subnet-group-siva-t11"
   subnet_ids = var.subnet_ids
 }
 
 resource "aws_db_instance" "this" {
-  identifier              = "${var.project_name}-postgres-jayani"
+  identifier              = "${var.project_name}-postgres-siva-t11"
   engine                  = "postgres"
   engine_version          = "15"
   instance_class          = "db.t3.micro"

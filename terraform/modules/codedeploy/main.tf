@@ -1,11 +1,11 @@
 resource "aws_codedeploy_app" "this" {
-  name             = "${var.project_name}-codedeploy-app-jayani"
+  name             = "${var.project_name}-codedeploy-app-siva-t11"
   compute_platform = "ECS"
 }
 
 resource "aws_codedeploy_deployment_group" "this" {
   app_name              = aws_codedeploy_app.this.name
-  deployment_group_name = "${var.project_name}-dg-jayani"
+  deployment_group_name = "${var.project_name}-dg-siva-t11"
   service_role_arn      = var.codedeploy_role_arn
 
   deployment_style {

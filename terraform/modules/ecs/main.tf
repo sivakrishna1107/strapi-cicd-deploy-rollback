@@ -1,9 +1,9 @@
 resource "aws_ecs_cluster" "this" {
-  name = "${var.project_name}-cluster-jayani"
+  name = "${var.project_name}-cluster-siva-t11"
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = "${var.project_name}-task-jayani"
+  family                   = "${var.project_name}-task-siva-t11"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "512"
@@ -86,7 +86,7 @@ resource "aws_ecs_task_definition" "this" {
       logConfiguration = {
           logDriver = "awslogs"
           options = {
-            awslogs-group         = "/ecs/${var.project_name}-jay"
+            awslogs-group         = "/ecs/${var.project_name}-siva-t11"
             awslogs-region        = var.aws_region
             awslogs-stream-prefix = "ecs"
           }
@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "this" {
 }
 
 resource "aws_ecs_service" "this" {
-  name            = "${var.project_name}-service-jayani"
+  name            = "${var.project_name}-service-siva-t11"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 2
