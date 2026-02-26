@@ -15,7 +15,7 @@ jobs:
           working-directory: terraform
     
     env:
-      TF_VAR_aws_region: us-east-1
+      TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
       TF_VAR_project_name: strapi
       TF_VAR_execution_role_arn: ${{ secrets.ECS_EXECUTION_ROLE_ARN }}
       TF_VAR_codedeploy_role_arn: ${{ secrets.CODEDEPLOY_ROLE_ARN }}
@@ -31,7 +31,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
