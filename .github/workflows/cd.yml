@@ -54,9 +54,16 @@ jobs:
 
       - name: Update Image in Task Definition
         run: |
-          jq '.containerDefinitions[0].image = "'"$ECR_REPOSITORY:${{ github.sha }}"'"'
-          | jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
-          > new-taskdef.json
+          jq --arg IMAGE "$ECR_REPOSITORY:${{ github.sha }}" \
+            '.containerDefinitions[0].image = $IMAGE
+            | del(.taskDefinitionArn,
+                  .revision,
+                  .status,
+                  .requiresAttributes,
+                  .compatibilities,
+                  .registeredAt,
+                  .registeredBy)' \
+            taskdef.json > new-taskdef.json
 
       - name: Register Updated Task Definition
         run: |
