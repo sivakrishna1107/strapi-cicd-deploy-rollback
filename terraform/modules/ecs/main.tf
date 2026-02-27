@@ -4,7 +4,6 @@ resource "aws_ecs_cluster" "this" {
 
 resource "aws_cloudwatch_log_group" "strapi" {
   name              = "/ecs/strapi-service-siva-t11"
-  retention_in_days = 7
 }
 
 
