@@ -7,8 +7,8 @@ resource "aws_ecs_task_definition" "this" {
   family                   = "${var.project_name}-task-siva-t11"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = "512"
-  memory                   = "1024"
+  cpu                      = "1024"
+  memory                   = "2048"
   execution_role_arn       = var.execution_role_arn
 
   container_definitions = jsonencode([
