@@ -87,7 +87,7 @@ resource "aws_ecs_task_definition" "this" {
       logConfiguration = {
           logDriver = "awslogs"
           options = {
-            awslogs-group         = "/ecs/${var.project_name}-t11-siva"
+            awslogs-group         = "/ecs/${var.project_name}-siva-t11"
             awslogs-region        = var.aws_region
             awslogs-stream-prefix = "ecs"
           }
