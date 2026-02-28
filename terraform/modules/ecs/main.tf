@@ -2,7 +2,6 @@ resource "aws_ecs_cluster" "this" {
   name = "${var.project_name}-cluster-siva-t11"
 }
 
-
 resource "aws_ecs_task_definition" "this" {
   family                   = "${var.project_name}-task-siva-t11"
   requires_compatibilities = ["FARGATE"]
